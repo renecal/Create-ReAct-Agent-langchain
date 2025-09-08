@@ -64,3 +64,27 @@ print(parsed_output)
 
 # Salida: {'thoughts': ['I need to find the capital of France.', 'I now know la respuesta final.'], 'actions': [{'action': 'Search', 'action_input': 'What is the capital of France?'}], 'final_answer': 'The capital of France is Paris.'}
 ```
+
+## Agent Scratchpad
+Clase que representa un bloc de notas para agentes, utilizado para registrar pensamientos, acciones y observaciones durante la ejecución del agente. Este bloc de notas ayuda a mantener un seguimiento del proceso de razonamiento del agente.
+
+### Ejemplo:
+
+```python
+from langchain.agents import AgentScratchpad
+
+scratchpad = AgentScratchpad()
+
+scratchpad.add_thought("I need to find the capital of France.")
+scratchpad.add_action("Search", "What is the capital of France?")
+scratchpad.add_observation("The capital of France is Paris.")
+scratchpad.add_thought("I now know the final answer.")
+
+print(scratchpad)
+
+# Salida: Thought: I need to find the capital of France.
+# Action: Search
+# Action Input: What is the capital of France?
+# Observation: The capital of France is Paris.
+# Thought: I now know the final answer.
+``` 
