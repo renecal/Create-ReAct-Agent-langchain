@@ -182,3 +182,15 @@ Proceso iterativo del agente:
         Salida final: La respuesta completa.
 
 Este ciclo Thought/Action -> Observation se repite hasta que el agente considera que tiene la información suficiente para generar la respuesta final. Es la base de los agentes de cadena de pensamiento (ReAct) en LangChain.
+
+## Function Calling vs ReAct
+Function Calling y ReAct son dos enfoques diferentes para interactuar con modelos de lenguaje en LangChain, cada uno con sus propias características y casos de uso.
+
+### Function Calling
+Function Calling se basa en la idea de que el modelo de lenguaje puede "llamar" a funciones específicas con entradas definidas. Este enfoque es útil cuando se necesita realizar tareas concretas y bien definidas, como buscar información en una base de datos o realizar cálculos. En este caso, el modelo actúa más como un orquestador que dirige el flujo de trabajo hacia funciones específicas.
+
+### ReAct
+Por otro lado, ReAct (Reasoning and Acting) se centra en el razonamiento del modelo sobre qué acciones tomar en función de la entrada del usuario y el contexto. Este enfoque es más flexible y permite al modelo adaptarse a situaciones cambiantes, utilizando un ciclo de pensamiento que incluye la observación de resultados intermedios y la adaptación de acciones futuras en consecuencia. ReAct es especialmente útil en escenarios donde se requiere un alto grado de interacción y adaptación, como en diálogos complejos o tareas de múltiples pasos.
+
+En resumen, mientras que Function Calling es más adecuado para tareas específicas y bien definidas, ReAct ofrece una mayor flexibilidad y capacidad de adaptación en situaciones más complejas.
+
