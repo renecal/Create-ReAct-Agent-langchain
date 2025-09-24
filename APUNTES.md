@@ -88,3 +88,26 @@ print(scratchpad)
 # Observation: The capital of France is Paris.
 # Thought: I now know the final answer.
 ``` 
+
+## format_log_to_str
+Función que formatea un registro de agente en una cadena de texto legible. Esta función toma un registro estructurado del agente y lo convierte en una representación de cadena que puede ser fácilmente entendida.
+
+### Ejemplo:
+
+```python
+from langchain.agents import format_log_to_str 
+log = {
+    "thoughts": ["I need to find the capital of France.", "I now know the final answer."],
+    "actions": [{"action": "Search", "action_input": "What is the capital of France?"}],
+    "final_answer": "The capital of France is Paris."
+}
+formatted_log = format_log_to_str(log)
+print(formatted_log)
+# Salida: Thought: I need to find the capital of France.
+# Action: Search
+# Action Input: What is the capital of France?
+# Thought: I now know the final answer.
+# Final Answer: The capital of France is Paris.
+```
+
+
