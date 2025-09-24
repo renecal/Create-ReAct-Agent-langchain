@@ -27,3 +27,4 @@ Once the tools have been executed and their results obtained, this step involves
 - [Langchain hub hwchase17](https://smith.langchain.com/hub/hwchase17/react?organizationId=5c031c7d-225f-41cf-9def-21161772e1fa)
 - [ReActSingleInputOutputParser](https://python.langchain.com/api_reference/langchain/agents/langchain.agents.output_parsers.react_single_input.ReActSingleInputOutputParser.html)
 - [LCEL](https://python.langchain.com/docs/concepts/lcel/)
+- [Callbacks](https://python.langchain.com/docs/how_to/#callbacks/)

@@ -109,5 +109,76 @@ print(formatted_log)
 # Thought: I now know the final answer.
 # Final Answer: The capital of France is Paris.
 ```
+## Callbacks (BaseCallbackHandler)
+Clase base para manejar callbacks en LangChain. Permite definir métodos que se ejecutan en respuesta a ciertos eventos durante la ejecución de modelos, agentes o cadenas. Los callbacks son útiles para monitorear, registrar o modificar el comportamiento de los componentes de LangChain.
 
+### Ejemplo:
 
+```python
+from langchain.callbacks.base import BaseCallbackHandler
+class CustomCallbackHandler(BaseCallbackHandler):
+    def on_llm_start(self, serialized, prompts, **kwargs):
+        print("LLM started with prompts:", prompts)
+
+    def on_llm_end(self, response, **kwargs):
+        print("LLM ended with response:", response)
+
+    def on_tool_start(self, tool_name, input_text, **kwargs):
+        print(f"Tool {tool_name} started with input:", input_text)
+
+    def on_tool_end(self, output, **kwargs):
+        print("Tool ended with output:", output)
+    def on_chain_start(self, serialized, inputs, **kwargs):
+        print("Chain started with inputs:", inputs) 
+    def on_chain_end(self, outputs, **kwargs):
+        print("Chain ended with outputs:", outputs)
+    def on_text(self, text, **kwargs):
+        print("Text output:", text)
+    def on_agent_action(self, action, **kwargs):
+        print("Agent action:", action)
+    def on_agent_finish(self, finish, **kwargs):                
+        print("Agent finished with:", finish)
+```
+
+## Entendiendo las iteraciones 
+En LangChain, las iteraciones se utilizan para la ejecución de agentes que requieren múltiples pasos para llegar a una respuesta final. Esto se debe a que un agente es un modelo de lenguaje que razona sobre qué acciones tomar, y cada acción, como usar una herramienta o hacer una búsqueda, es un paso en un ciclo de "pensar, actuar, observar".
+
+El resultado de la primera invocación (hasta antes de Observation) se obtiene porque representa el primer paso del agente: el pensamiento inicial y la acción que decide tomar. La estructura de un agente se puede ver como:
+
+    Thought (Pensamiento): El agente analiza la entrada y determina el siguiente paso.
+
+    Action (Acción): El agente selecciona una herramienta a usar (como una búsqueda en la web).
+
+    Action Input (Entrada de la Acción): Proporciona la entrada para la herramienta seleccionada.
+
+    Observation (Observación): Este es el resultado de la acción. Es lo que sucede después de que la herramienta se ha ejecutado.
+
+Por lo tanto, en la primera invocación, obtienes el Thought, Action, y Action Input porque son la salida del modelo en un solo paso. La Observation es el resultado de la acción, que aún no ha ocurrido. El ciclo de iteración continúa, usando la Observation como entrada para el siguiente paso del agente hasta que se alcanza la respuesta final.
+
+Proceso iterativo del agente:
+
+    Paso 1:
+
+        Entrada: ¿Cuál es el clima en París?
+
+        Modelo de lenguaje: Thought: Necesito saber el clima, usaré la herramienta de búsqueda. Action: 'search', Action Input: 'clima en París'.
+
+        Salida de la primera invocación: Thought, Action, Action Input.
+
+    Paso 2:
+
+        Se ejecuta la herramienta search con la entrada 'clima en París'.
+
+        Se obtiene la Observation: 'El clima en París es 15°C y soleado'.
+
+        El agente usa esta Observation como entrada para el siguiente paso.
+
+    Paso 3 (iteración 2):
+
+        Entrada: El clima en París es 15°C y soleado.
+
+        Modelo de lenguaje: Thought: Ya tengo la información, puedo dar la respuesta. Final Answer: El clima en París es 15°C y soleado.
+
+        Salida final: La respuesta completa.
+
+Este ciclo Thought/Action -> Observation se repite hasta que el agente considera que tiene la información suficiente para generar la respuesta final. Es la base de los agentes de cadena de pensamiento (ReAct) en LangChain.
