@@ -186,11 +186,20 @@ Este ciclo Thought/Action -> Observation se repite hasta que el agente considera
 ## Function Calling vs ReAct
 Function Calling y ReAct son dos enfoques diferentes para interactuar con modelos de lenguaje en LangChain, cada uno con sus propias características y casos de uso.
 
-### Function Calling
-Function Calling se basa en la idea de que el modelo de lenguaje puede "llamar" a funciones específicas con entradas definidas. Este enfoque es útil cuando se necesita realizar tareas concretas y bien definidas, como buscar información en una base de datos o realizar cálculos. En este caso, el modelo actúa más como un orquestador que dirige el flujo de trabajo hacia funciones específicas.
+### Function Calling (Tool calling)
+Function Calling o tool calling se basa en la idea de que el modelo de lenguaje puede "llamar" a funciones específicas con entradas definidas. Este enfoque es útil cuando se necesita realizar tareas concretas y bien definidas, como buscar información en una base de datos o realizar cálculos. En este caso, el modelo actúa más como un orquestador que dirige el flujo de trabajo hacia funciones específicas. Function Calling es ideal para escenarios donde las acciones son predecibles y el modelo puede beneficiarse de la estructura y precisión que ofrecen las funciones definidas.
+
 
 ### ReAct
 Por otro lado, ReAct (Reasoning and Acting) se centra en el razonamiento del modelo sobre qué acciones tomar en función de la entrada del usuario y el contexto. Este enfoque es más flexible y permite al modelo adaptarse a situaciones cambiantes, utilizando un ciclo de pensamiento que incluye la observación de resultados intermedios y la adaptación de acciones futuras en consecuencia. ReAct es especialmente útil en escenarios donde se requiere un alto grado de interacción y adaptación, como en diálogos complejos o tareas de múltiples pasos.
 
 En resumen, mientras que Function Calling es más adecuado para tareas específicas y bien definidas, ReAct ofrece una mayor flexibilidad y capacidad de adaptación en situaciones más complejas.
 
+| Característica | Function Calling | ReAct Prompting |
+| :--- | :--- | :--- |
+| **Definición** | Un mecanismo pre-entrenado que permite a un LLM identificar cuándo y cómo llamar a una función externa basándose en el lenguaje natural. El modelo devuelve una **llamada a función estructurada** (ej. JSON) que el desarrollador debe ejecutar. | Una técnica de *prompt engineering* que guía al LLM a "pensar" y "actuar" de manera secuencial. El modelo genera un **flujo de texto libre** que incluye un razonamiento explícito (`Thought`), la acción a tomar (`Action`) y la entrada para la acción (`Action Input`). |
+| **Mecanismo** | Es una capacidad intrínseca del modelo, a menudo optimizada durante el pre-entrenamiento. El modelo "sabe" que debe generar un JSON en respuesta a una solicitud que requiere una herramienta. | Es una técnica de prompting que se implementa a nivel de la instrucción. Se le pide al modelo que siga un formato específico en su respuesta (por ejemplo, `Pensamiento: ... Acción: ... Entrada de acción: ...`). |
+| **Control y flexibilidad** | Generalmente más **simple y directo** para tareas específicas. El desarrollador tiene menos control sobre el proceso de razonamiento interno del modelo. | Ofrece **mayor control y flexibilidad**. El desarrollador puede ver y modificar el razonamiento del modelo, lo que lo hace ideal para tareas complejas o de múltiples pasos. |
+| **Casos de uso** | Ideal para tareas donde la lógica es clara y no requiere pasos intermedios, como obtener el pronóstico del tiempo, enviar un correo electrónico o buscar información específica en una base de datos. | Mejor para tareas que requieren **razonamiento complejo y adaptativo**, como la resolución de problemas creativos, la toma de decisiones en tiempo real o la búsqueda de información que requiere múltiples consultas. |
+| **Dependencia** | Depende de las funciones y su esquema definidos en la API del modelo. Si no hay una función predefinida, el modelo no puede "llamarse" a sí mismo. | Depende de la calidad del prompt y de la capacidad del modelo para seguir instrucciones. Es más versátil y puede usar herramientas que no están predefinidas de antemano. |
+| **Ejemplo de respuesta del LLM** | `{"name": "get_weather", "arguments": {"location": "Santiago"}}` | `Pensamiento: El usuario quiere saber el tiempo en Santiago. Necesito una herramienta para obtener el pronóstico del tiempo.<br>Acción: get_weather<br>Entrada de acción: Santiago` |
